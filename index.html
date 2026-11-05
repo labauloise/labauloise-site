@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La Bauloise</title>
+<meta name="description" content="Authentic Breton galettes and crêpes, made in front of you in San Francisco.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@400;500&display=swap">
+<style>
+/* Layout: Breizh Café–style editorial. Full-bleed photo banner with the logo centered over it,
+   then quiet white sections: text + photo collage, private events + form, a signed quote and an accordion.
+   Uppercase spaced sans for structure, Garamond for reading, the brand script only for signatures. Photos are empty frames for now. */
+:root{
+  --bg:#FFFFFF; --soft:#F6F5F2; --ph:#E6E4E0; --line:#E2E0DB; --ink:#16192B; --navy:#284573; --red:#A62142; --muted:#5E6372;
+  --serif:"EB Garamond", Garamond, Georgia, serif;
+  --sans:"Jost", "Futura", "Helvetica Neue", Arial, sans-serif;
+  --script:"Dancing Script", "Brush Script MT", cursive;
+  --gl:max(20px, env(safe-area-inset-left, 0px)); --gr:max(20px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:1.2rem;line-height:1.65;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+p{margin:0}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+.caps{font-family:var(--sans);font-weight:500;text-transform:uppercase;letter-spacing:.18em}
+h2{font-family:var(--sans);font-weight:500;text-transform:uppercase;letter-spacing:.16em;font-size:clamp(1.35rem,2.6vw,1.9rem);line-height:1.3;margin:0;color:var(--ink);text-wrap:balance}
+h3{font-family:var(--sans);font-weight:500;text-transform:uppercase;letter-spacing:.12em;font-size:.95rem;margin:0}
+section{padding-block:clamp(72px,10vw,128px)}
+
+/* empty photo frame */
+.ph{background:var(--ph);position:relative;overflow:hidden}
+.ph::after{content:attr(data-label);position:absolute;inset:auto 0 12px 0;text-align:center;font-family:var(--sans);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#9A978F}
+
+/* hero banner */
+.hero{position:relative;min-height:clamp(480px,80vh,780px);display:grid;grid-template-rows:auto 1fr auto;color:#fff;background:#3A3F4E}
+.hero .ph{position:absolute;inset:0;background:linear-gradient(160deg,#4A505F,#2C3140)}
+.hero .ph::after{color:rgba(255,255,255,.45);bottom:18px}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,20,.45),rgba(10,12,20,.1) 40%,rgba(10,12,20,.35));z-index:1}
+.topnav{position:relative;z-index:2;width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:22px}
+.topnav .left,.topnav .right{display:flex;gap:28px;align-items:center}
+.topnav .right{justify-content:flex-end}
+.topnav a,.topnav button.link{font-family:var(--sans);font-size:.78rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#fff;text-decoration:none;background:none;border:0;cursor:pointer;padding:6px 0;border-bottom:1px solid transparent}
+.topnav a:hover,.topnav button.link:hover{border-bottom-color:#fff}
+.lang{display:flex;gap:6px;align-items:center;font-family:var(--sans);font-size:.75rem;letter-spacing:.14em}
+.lang button{background:none;border:0;color:inherit;opacity:.6;cursor:pointer;font:inherit;letter-spacing:inherit;padding:4px 2px}
+.lang button[aria-pressed="true"]{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.hero-center{position:relative;z-index:2;display:grid;place-items:center;text-align:center;gap:18px;padding-block:24px 0}
+.hero-center img{width:min(420px,72vw);filter:drop-shadow(0 2px 18px rgba(0,0,0,.25))}
+.hero-center p{font-family:var(--sans);font-size:.82rem;letter-spacing:.32em;text-transform:uppercase;opacity:.92}
+.scroll-cue{position:relative;z-index:2;justify-self:center;margin-bottom:26px;background:none;border:0;color:#fff;cursor:pointer;padding:8px}
+.scroll-cue svg{width:34px;height:20px}
+@media (max-width:820px){
+  .topnav{grid-template-columns:1fr auto;}
+  .topnav .left{display:none}
+  .topnav .center{order:-1}
+  .hero-links{display:flex!important}
+}
+.hero-links{display:none;position:relative;z-index:2;justify-content:center;gap:22px;margin-bottom:18px}
+.hero-links a{font-family:var(--sans);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.6);padding-bottom:3px}
+
+/* sticky bar after the banner */
+.bar{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);transform:translateY(-110%);transition:transform .35s ease}
+.bar.show{transform:none}
+.bar .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding-block:10px}
+.bar img{height:34px;width:auto}
+.bar .l,.bar .r{display:flex;gap:22px;align-items:center}
+.bar .r{justify-content:flex-end}
+.bar a,.bar button.link{font-family:var(--sans);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--ink);background:none;border:0;cursor:pointer;padding:4px 0}
+.bar a:hover,.bar button.link:hover{color:var(--red)}
+.bar .lang{color:var(--ink)}
+@media (max-width:820px){.bar .l{display:none}.bar .wrap{grid-template-columns:auto 1fr}.bar .center{order:-1}.bar .r{gap:14px}.bar .hide-sm{display:none}}
+@media (prefers-reduced-motion:reduce){.bar{transition:none}}
+
+/* intro: text + collage */
+.intro .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,6vw,88px);align-items:center}
+.intro .text{display:grid;gap:24px;min-width:0}
+.rule{width:72px;height:3px;background:var(--ink)}
+.intro .text p.lead{font-size:clamp(1.25rem,1.9vw,1.45rem);line-height:1.6;max-width:30em}
+.sign{font-family:var(--script);font-size:1.7rem;color:var(--red);justify-self:end;text-align:right;line-height:1.2}
+.collage{position:relative;height:clamp(320px,36vw,440px);max-width:480px;justify-self:center;width:100%}
+.collage .ph{position:absolute;border:10px solid #fff;box-shadow:0 10px 30px -12px rgba(22,25,43,.35)}
+.collage .p1{width:44%;aspect-ratio:3/4;left:0;top:12%;transform:rotate(-5deg)}
+.collage .p3{width:44%;aspect-ratio:3/4;right:0;top:10%;transform:rotate(5deg)}
+.collage .p2{width:52%;aspect-ratio:3/4;left:24%;top:0;z-index:2;transform:rotate(-1deg)}
+@media (max-width:820px){.intro .grid{grid-template-columns:1fr}.collage{height:360px}}
+
+/* private events */
+.private{background:var(--soft)}
+.private .head{text-align:center;display:grid;gap:22px;justify-items:center;max-width:720px;margin-inline:auto}
+.private .head p{max-width:36em}
+.private .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:stretch;margin-top:56px}
+.private .split .ph{min-height:380px}
+@media (max-width:820px){.private .split{grid-template-columns:1fr}.private .split .ph{min-height:0;aspect-ratio:4/3}}
+form{display:grid;gap:14px;background:#fff;padding:clamp(24px,4vw,40px);border:1px solid var(--line);min-width:0}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.row2{grid-template-columns:1fr}}
+label{display:grid;gap:6px;font-family:var(--sans);font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+input,textarea{font-family:var(--serif);font-size:1.05rem;color:var(--ink);background:#fff;border:0;border-bottom:1px solid #BDBAB3;border-radius:0;padding:8px 2px;width:100%;min-width:0}
+input:focus,textarea:focus{outline:none;border-bottom-color:var(--ink)}
+input[aria-invalid="true"],textarea[aria-invalid="true"]{border-bottom-color:var(--red)}
+textarea{min-height:96px;resize:vertical;border:1px solid #BDBAB3;padding:10px}
+textarea:focus{border-color:var(--ink)}
+.btn{font-family:var(--sans);font-size:.78rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;padding:15px 28px;background:var(--ink);color:#fff;border:0;cursor:pointer}
+.btn:hover{background:var(--navy)}
+.btn.light{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.btn.light:hover{background:var(--ink);color:#fff}
+.status{font-family:var(--sans);font-size:.85rem;color:var(--navy)}
+.status[data-kind="ok"]{color:#2f6b3a}
+.status[data-kind="err"]{color:var(--red)}
+
+/* our story: signed quote + accordion */
+.story .quote{max-width:760px;margin-inline:auto;text-align:center;display:grid;gap:22px;justify-items:center}
+.story .quote blockquote{margin:0;font-size:clamp(1.35rem,2.4vw,1.75rem);line-height:1.5;font-style:italic}
+.acc{max-width:820px;margin:72px auto 0;border-top:1px solid var(--ink)}
+.acc details{border-bottom:1px solid var(--ink)}
+.acc summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 2px;font-family:var(--sans);font-weight:500;font-size:.9rem;letter-spacing:.14em;text-transform:uppercase}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary .pm{font-family:var(--sans);font-size:1.4rem;font-weight:400;line-height:1;transition:transform .25s}
+.acc details[open] summary .pm{transform:rotate(45deg)}
+.acc .body{padding:0 2px 34px;display:grid;gap:16px;max-width:42em;margin-inline:auto}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:10px}
+.person{display:grid;gap:12px;justify-items:center;text-align:center}
+.person .ph{width:150px;aspect-ratio:1/1;border-radius:50%}
+.person .ph::after{bottom:auto;top:50%;transform:translateY(-50%)}
+.person h3{color:var(--ink)}
+.person p{font-size:1.05rem}
+@media (max-width:560px){.duo{grid-template-columns:1fr}}
+
+/* footer */
+footer{background:var(--ink);color:#fff;padding-block:64px 40px}
+footer .grid{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(32px,6vw,80px);align-items:start}
+footer .brand{display:grid;gap:18px}
+footer .brand img{width:180px}
+footer .links{display:grid;gap:6px;font-family:var(--sans);font-size:.85rem;letter-spacing:.06em}
+footer .links a{text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35);justify-self:start}
+footer .email{user-select:all}
+footer form{background:transparent;border:1px solid rgba(255,255,255,.25);padding:24px}
+footer h3{color:#fff}
+footer label{color:#C9CCD6}
+footer input,footer textarea{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+footer input:focus,footer textarea:focus{border-color:#fff}
+footer .btn{background:#fff;color:var(--ink)}
+footer .btn:hover{background:#E8E6E1}
+footer .status{color:#DDE2EE}
+footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);font-family:var(--sans);font-size:.75rem;letter-spacing:.08em;color:#AEB3C2}
+@media (max-width:820px){footer .grid{grid-template-columns:1fr}}
+
+/* pop-up announcement (opens on arrival) */
+.modal{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) var(--gr) max(16px,env(safe-area-inset-bottom,0px)) var(--gl);background:rgba(12,14,24,.55)}
+.modal[hidden]{display:none!important}
+.dialog{position:relative;display:grid;grid-template-columns:1fr 1fr;width:min(900px,100%);max-height:100%;overflow:auto;background:#fff;box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+.dialog .ph{min-height:420px;background:var(--navy)}
+.dialog .ph::after{color:rgba(255,255,255,.5)}
+.dialog .ph img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:70%}
+.dialog .txt{padding:clamp(28px,5vw,52px);display:grid;gap:18px;align-content:center}
+.dialog h2{font-size:clamp(1.3rem,2.4vw,1.7rem);letter-spacing:.1em}
+.dates{list-style:none;padding:0;margin:4px 0 6px;display:grid;gap:12px}
+.dates li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;border-top:1px solid var(--line);padding-top:12px}
+.dates .d{font-family:var(--sans);font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:.85rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+.dates .w{font-size:1.08rem;line-height:1.4}
+.dates .w span{display:block;font-family:var(--sans);font-size:.78rem;letter-spacing:.08em;color:var(--muted)}
+.close{position:absolute;top:10px;right:12px;width:40px;height:40px;border:0;background:none;font-size:1.6rem;line-height:1;cursor:pointer;color:var(--ink);z-index:2}
+@media (max-width:720px){.dialog{grid-template-columns:1fr}.dialog .ph{min-height:0;aspect-ratio:16/9}}
+</style>
+</head>
+<body>
+
+<!-- Pop-up announcement -->
+<div class="modal" id="popup-modal" role="dialog" aria-modal="true" aria-labelledby="popup-title" hidden>
+  <div class="dialog" id="popup-dialog" tabindex="-1" style="outline:none">
+    <button class="close" type="button" id="popup-close" aria-label="Close">×</button>
+    <div class="ph" data-label="Photo"><img src="logo-cream.png" alt="" width="700" height="282"></div>
+    <div class="txt">
+      <h2 id="popup-title" data-i18n="pop.title">Find us at our pop-ups!</h2>
+      <p data-i18n="pop.text">Taste real French crêpes and galettes, right here in the Bay Area.</p>
+      <ul class="dates" id="popup-dates"></ul>
+      <div><a class="btn" href="https://www.instagram.com/labauloise.creperie/" target="_blank" rel="noopener" data-i18n="pop.ig">Follow us on Instagram</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky bar (appears after the banner) -->
+<div class="bar" id="bar" aria-hidden="true">
+  <div class="wrap">
+    <div class="l"><a href="#our-story" data-i18n="nav.story">Our story</a></div>
+    <div class="center"><a href="#top" aria-label="La Bauloise, back to top"><img src="logo-red.png" alt="La Bauloise" width="84" height="34"></a></div>
+    <div class="r">
+      <a class="hide-sm" href="#private-events" data-i18n="nav.private">Private events</a>
+      <button type="button" class="link" data-open-popup data-i18n="nav.popups">Pop-ups</button>
+      <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><span aria-hidden="true">/</span><button type="button" data-lang="fr" aria-pressed="false">FR</button></div>
+    </div>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="ph" data-label="Photo"></div>
+  <nav class="wrap topnav" aria-label="Main">
+    <div class="left"><a href="#our-story" data-i18n="nav.story">Our story</a><button type="button" class="link" data-open-popup data-i18n="nav.popups">Pop-ups</button></div>
+    <div class="center"></div>
+    <div class="right">
+      <a href="#private-events" data-i18n="nav.private">Private events</a>
+      <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><span aria-hidden="true">/</span><button type="button" data-lang="fr" aria-pressed="false">FR</button></div>
+    </div>
+  </nav>
+  <div class="hero-center">
+    <h1 style="margin:0"><img src="logo-cream.png" alt="La Bauloise, crêperie française" width="700" height="282"></h1>
+    <p data-i18n="hero.tag">Crêperie française · San Francisco</p>
+  </div>
+  <div>
+    <div class="hero-links"><a href="#our-story" data-i18n="nav.story">Our story</a><a href="#private-events" data-i18n="nav.private">Private events</a></div>
+    <div style="display:grid"><a class="scroll-cue" href="#intro" aria-label="Scroll down"><svg viewBox="0 0 34 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 2l15 15L32 2"/></svg></a></div>
+  </div>
+</header>
+
+<main>
+  <section class="intro" id="intro">
+    <div class="wrap grid">
+      <div class="text">
+        <div class="rule" aria-hidden="true"></div>
+        <p class="lead" data-i18n="intro.text">La Bauloise invites you on a true journey of flavors across France. With passion, right in front of you and with fresh, organic, homemade ingredients, we make real buckwheat galettes (naturally gluten-free) and sweet crêpes, to offer you much more than a meal: a delicious experience and unforgettable moments to share.</p>
+        <p class="sign" data-i18n="intro.sign">Our secret? Generosity, sharing and love</p>
+      </div>
+      <div class="collage" aria-hidden="true">
+        <div class="ph p1" data-label="Photo"></div>
+        <div class="ph p2" data-label="Photo"></div>
+        <div class="ph p3" data-label="Photo"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="private" id="private-events">
+    <div class="wrap">
+      <div class="head">
+        <p class="caps" style="font-size:.75rem;color:var(--muted)" data-i18n="private.eyebrow">Private events</p>
+        <h2 data-i18n="private.title">Crêpes for every occasion</h2>
+        <p data-i18n="private.p1">A birthday party, a company event or a moment with family?</p>
+        <p data-i18n="private.p2">Want a crêpe &amp; galette station at your event? Seated dinner, cocktail format or cones to go: we adapt to whatever you have in mind!</p>
+        <p data-i18n="private.p3">Fill in this short form and we'll get back to you quickly to design a service made for you.</p>
+      </div>
+      <div class="split">
+        <div class="ph" data-label="Photo"></div>
+        <form id="event-form" data-form="event" novalidate>
+          <div class="row2">
+            <label for="ev-name"><span data-i18n="form.name">Name</span><input id="ev-name" name="name" autocomplete="name" required></label>
+            <label for="ev-email"><span data-i18n="form.email">Email</span><input id="ev-email" name="email" type="email" autocomplete="email" required></label>
+          </div>
+          <div class="row2">
+            <label for="ev-date"><span data-i18n="form.date">Date</span><input id="ev-date" name="date" type="date"></label>
+            <label for="ev-guests"><span data-i18n="form.guests">Guests</span><input id="ev-guests" name="guests" type="number" min="1" inputmode="numeric"></label>
+          </div>
+          <label for="ev-msg"><span data-i18n="form.more">Tell us more</span><textarea id="ev-msg" name="message"></textarea></label>
+          <div><button class="btn" type="submit" data-i18n="form.send">Send</button></div>
+          <p class="status" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="story" id="our-story">
+    <div class="wrap">
+      <div class="quote">
+        <p class="caps" style="font-size:.75rem;color:var(--muted)" data-i18n="story.eyebrow">Our story</p>
+        <blockquote data-i18n="story.quote">La Bauloise was imagined as a maker of connections. Our everyday ambition? To bring you together around a generous table, spark smiles and leave beautiful shared moments in your memories.</blockquote>
+        <p class="sign" style="justify-self:center">Pauline &amp; Charles</p>
+      </div>
+      <div class="acc">
+        <details>
+          <summary><span data-i18n="acc.story">Our story</span><span class="pm" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <p data-i18n="story.p1">On a trip to San Francisco, Charles went looking for the comfort of a really good French crêpe. There wasn't one to be found, and the spark came: what if we brought them here ourselves?</p>
+            <p data-i18n="story.p2">He brought Pauline along on this crazy adventure. Together they trained at a crêpe school and perfected their craft in restaurants.</p>
+            <p data-i18n="story.p3">Diplomas in hand, passion at heart and full of motivation: La Bauloise was born!</p>
+          </div>
+        </details>
+        <details>
+          <summary><span data-i18n="acc.about">About us</span><span class="pm" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <p data-i18n="about.p">Together since 2021, we combine our strengths to build a project that feels like us. We complement each other every day: Charles in the kitchen and creating, Pauline on organization and welcoming you.</p>
+            <div class="duo">
+              <div class="person"><div class="ph" data-label="Photo"></div><h3>Pauline</h3><p data-i18n="about.pauline">With a Master's in HR and from a family of caterers, she went along to her father's business meetings just to taste every dish.</p></div>
+              <div class="person"><div class="ph" data-label="Photo"></div><h3>Charles</h3><p data-i18n="about.charles">A former pro tennis player and certified coach, he mostly cooked with his family to get out of doing homework!</p></div>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary><span data-i18n="acc.name">Behind the name La Bauloise…</span><span class="pm" aria-hidden="true">+</span></summary>
+          <div class="body">
+            <p data-i18n="name.p">Choosing La Bauloise felt obvious: bringing a piece of La Baule, our Breton hometown, along with us. It's a tribute to our family and to the precious legacy of our grandparents, who passed down the perfect gesture and the art of the true Breton crêpe.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div class="brand">
+        <img src="logo-cream.png" alt="La Bauloise" width="700" height="282">
+        <div class="links">
+          <a href="https://www.instagram.com/labauloise.creperie/" target="_blank" rel="noopener">Instagram · @labauloise.creperie</a>
+          <span class="email">labauloise.sf@gmail.com</span>
+        </div>
+      </div>
+      <form id="feedback-form" data-form="feedback" novalidate>
+        <h3 data-i18n="fb.title">A word for us?</h3>
+        <label for="fb-name"><span data-i18n="form.name">Name</span><input id="fb-name" name="name" autocomplete="name"></label>
+        <label for="fb-msg"><span data-i18n="fb.msg">Your message to Pauline &amp; Charles</span><textarea id="fb-msg" name="message" required></textarea></label>
+        <div><button class="btn" type="submit" data-i18n="form.send">Send</button></div>
+        <p class="status" role="status"></p>
+      </form>
+    </div>
+    <p class="fine">© 2026 La Bauloise · San Francisco</p>
+  </div>
+</footer>
+
+<script>
+/* ===== Settings to fill in before launch ===== */
+const SCHEDULE_CSV_URL = "";   // Google Sheet published as CSV. Columns: date (YYYY-MM-DD), venue, time_en, time_fr
+const FORM_ENDPOINT = "";      // Form service that emails labauloise.sf@gmail.com (Web3Forms / Formspree). Empty = preview mode.
+
+// Pop-up dates from Pauline (Nov 4, 2026). Replaced by the Google Sheet once it's connected.
+let SCHEDULE = [
+  {date:"2026-11-15", venue:"Noe Valley Coffee Shop", time_en:"9am – 2pm", time_fr:"9h00 – 14h00"},
+  {date:"2026-11-22", venue:"Marina District Farmers Market", time_en:"10am – 3pm", time_fr:"10h00 – 15h00"}
+];
+
+const T = {
+  en:{
+    "nav.story":"Our story","nav.private":"Private events","nav.popups":"Pop-ups","hero.tag":"Crêperie française · San Francisco",
+    "pop.title":"Find us at our pop-ups!","pop.text":"Taste real French crêpes and galettes, right here in the Bay Area.","pop.ig":"Follow us on Instagram","pop.none":"New dates coming soon. Follow us on Instagram to hear first.",
+    "intro.text":"La Bauloise invites you on a true journey of flavors across France. With passion, right in front of you and with fresh, organic, homemade ingredients, we make real buckwheat galettes (naturally gluten-free) and sweet crêpes, to offer you much more than a meal: a delicious experience and unforgettable moments to share.",
+    "intro.sign":"Our secret? Generosity, sharing and love",
+    "private.eyebrow":"Private events","private.title":"Crêpes for every occasion","private.p1":"A birthday party, a company event or a moment with family?",
+    "private.p2":"Want a crêpe & galette station at your event? Seated dinner, cocktail format or cones to go: we adapt to whatever you have in mind!",
+    "private.p3":"Fill in this short form and we'll get back to you quickly to design a service made for you.",
+    "form.name":"Name","form.email":"Email","form.date":"Date","form.guests":"Guests","form.more":"Tell us more","form.send":"Send",
+    "story.eyebrow":"Our story","story.quote":"La Bauloise was imagined as a maker of connections. Our everyday ambition? To bring you together around a generous table, spark smiles and leave beautiful shared moments in your memories.",
+    "acc.story":"Our story","acc.about":"About us","acc.name":"Behind the name La Bauloise…",
+    "story.p1":"On a trip to San Francisco, Charles went looking for the comfort of a really good French crêpe. There wasn't one to be found, and the spark came: what if we brought them here ourselves?",
+    "story.p2":"He brought Pauline along on this crazy adventure. Together they trained at a crêpe school and perfected their craft in restaurants.",
+    "story.p3":"Diplomas in hand, passion at heart and full of motivation: La Bauloise was born!",
+    "about.p":"Together since 2021, we combine our strengths to build a project that feels like us. We complement each other every day: Charles in the kitchen and creating, Pauline on organization and welcoming you.",
+    "about.pauline":"With a Master's in HR and from a family of caterers, she went along to her father's business meetings just to taste every dish.",
+    "about.charles":"A former pro tennis player and certified coach, he mostly cooked with his family to get out of doing homework!",
+    "name.p":"Choosing La Bauloise felt obvious: bringing a piece of La Baule, our Breton hometown, along with us. It's a tribute to our family and to the precious legacy of our grandparents, who passed down the perfect gesture and the art of the true Breton crêpe.",
+    "fb.title":"A word for us?","fb.msg":"Your message to Pauline & Charles",
+    "form.need":"Please fill in the highlighted fields.","form.sending":"Sending…","form.ok.event":"Thank you! We'll get back to you very soon.","form.ok.feedback":"Thank you! Your message is on its way.",
+    "form.fail":"That didn't go through. Please try again, or email labauloise.sf@gmail.com.",
+    "form.preview":"Preview: this form isn't connected yet. On the live site it goes straight to labauloise.sf@gmail.com."
+  },
+  fr:{
+    "nav.story":"Notre histoire","nav.private":"Privatisation","nav.popups":"Pop-ups","hero.tag":"Crêperie française · San Francisco",
+    "pop.title":"Retrouvez-nous en pop-up !","pop.text":"Retrouvez le goût authentique des vraies crêpes et galettes françaises dans la Bay Area.","pop.ig":"Suivez-nous sur Instagram","pop.none":"Nouvelles dates bientôt. Suivez-nous sur Instagram pour être les premiers informés.",
+    "intro.text":"La Bauloise vous invite à un véritable voyage gustatif à travers la France. Nous préparons avec passion, sous vos yeux et avec des ingrédients frais, bio et faits maison, de véritables galettes de sarrasin (naturellement sans gluten) et des crêpes sucrées pour vous offrir bien plus qu'un repas : une expérience savoureuse et des moments inoubliables à partager.",
+    "intro.sign":"Notre secret ? Générosité, partage et amour",
+    "private.eyebrow":"Privatisation & événements privés","private.title":"Des crêpes pour toutes les occasions","private.p1":"Une fête d'anniversaire, un événement d'entreprise ou un moment partagé en famille ?",
+    "private.p2":"Envie d'une animation crêpes & galettes pour votre événement ? Dîner assis, format cocktail ou cônes à emporter : nous nous adaptons à toutes vos envies !",
+    "private.p3":"Remplissez ce petit formulaire et nous vous recontacterons rapidement pour concevoir votre prestation sur mesure.",
+    "form.name":"Nom","form.email":"E-mail","form.date":"Date","form.guests":"Invités","form.more":"Dites-nous en plus","form.send":"Envoyer",
+    "story.eyebrow":"Notre histoire","story.quote":"La Bauloise a été pensée comme un créateur de liens. Notre ambition au quotidien ? Vous rassembler autour d'une table gourmande, faire naître des sourires et graver de beaux moments de partage dans les mémoires.",
+    "acc.story":"Notre histoire","acc.about":"À propos de nous","acc.name":"Derrière le nom La Bauloise…",
+    "story.p1":"En voyage à San Francisco, Charles cherchait le réconfort d'une vraie bonne crêpe française. Face à l'impossible, l'étincelle jaillit : et si nous les apportions nous-mêmes ?",
+    "story.p2":"Il embarque Pauline dans cette folle aventure. Ensemble, ils partent se former dans une école de crêpiers et perfectionner leur savoir-faire en restaurant.",
+    "story.p3":"Diplômes en poche, passion au cœur et motivation débordante, La Bauloise était née !",
+    "about.p":"Ensemble depuis 2021, nous combinons nos forces pour créer un projet qui nous ressemble. Ultra-complémentaires au quotidien : Charles en cuisine et à la création, Pauline à l'organisation et à l'accueil.",
+    "about.pauline":"Diplômée d'un Master RH et issue d'une famille de traiteurs, elle accompagnait son père en rendez-vous uniquement pour goûter à tous les plats.",
+    "about.charles":"Ancien joueur de tennis pro et coach diplômé, il cuisinait surtout en famille pour échapper à ses devoirs d'école !",
+    "name.p":"Choisir La Bauloise, c'était comme une évidence : faire voyager un bout de La Baule, notre ville natale bretonne. C'est un hommage à notre famille et le précieux héritage de nos grands-parents, qui nous ont transmis le geste parfait et l'art de la vraie crêpe bretonne.",
+    "fb.title":"Un mot pour nous ?","fb.msg":"Votre message pour Pauline & Charles",
+    "form.need":"Merci de remplir les champs indiqués.","form.sending":"Envoi…","form.ok.event":"Merci ! Nous vous recontactons très vite.","form.ok.feedback":"Merci ! Votre message est bien parti.",
+    "form.fail":"L'envoi n'a pas marché. Réessayez, ou écrivez à labauloise.sf@gmail.com.",
+    "form.preview":"Aperçu : ce formulaire n'est pas encore branché. Sur le site en ligne, il arrive directement sur labauloise.sf@gmail.com."
+  }
+};
+
+let lang = "en";
+try { const s = localStorage.getItem("lb-lang"); if (s === "en" || s === "fr") lang = s; } catch (e) {}
+const t = k => (T[lang] && T[lang][k]) ?? T.en[k] ?? k;
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  renderDates();
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
+  lang = b.dataset.lang; try { localStorage.setItem("lb-lang", lang); } catch (e) {} applyLang();
+}));
+
+/* ----- pop-up dates + announcement ----- */
+function upcoming(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  return SCHEDULE.map(r => ({...r, d:new Date(r.date + "T12:00:00")})).filter(r => !isNaN(r.d) && r.d >= today).sort((a,b) => a.d - b.d).slice(0,4);
+}
+function renderDates(){
+  const ul = document.getElementById("popup-dates"), rows = upcoming(), loc = lang === "fr" ? "fr-FR" : "en-US";
+  if (!rows.length){ ul.innerHTML = `<li><span class="w">${esc(t("pop.none"))}</span></li>`; return; }
+  ul.innerHTML = rows.map(r => {
+    const d = r.d.toLocaleDateString(loc, {month:"short", day:"numeric"}).replace(".", "");
+    return `<li><span class="d">${esc(d)}</span><span class="w">${esc(r.venue)}<span>${esc(lang === "fr" ? r.time_fr : r.time_en)}</span></span></li>`;
+  }).join("");
+}
+const modal = document.getElementById("popup-modal");
+let lastFocus = null;
+function openPopup(){ lastFocus = document.activeElement; modal.hidden = false; document.getElementById("popup-dialog").focus(); }
+function closePopup(){ modal.hidden = true; try { sessionStorage.setItem("lb-popup-seen", "1"); } catch (e) {} if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+document.getElementById("popup-close").addEventListener("click", closePopup);
+modal.addEventListener("click", e => { if (e.target === modal) closePopup(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closePopup(); });
+document.querySelectorAll("[data-open-popup]").forEach(b => b.addEventListener("click", openPopup));
+
+/* ----- sticky bar after the banner ----- */
+const bar = document.getElementById("bar");
+new IntersectionObserver(([e]) => { const show = !e.isIntersecting; bar.classList.toggle("show", show); bar.setAttribute("aria-hidden", String(!show)); }, {rootMargin:"-80px 0px 0px 0px"}).observe(document.querySelector(".hero"));
+
+/* ----- forms ----- */
+document.querySelectorAll("form[data-form]").forEach(form => form.addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const st = form.querySelector(".status");
+  form.querySelectorAll("[aria-invalid]").forEach(i => i.removeAttribute("aria-invalid"));
+  const missing = [...form.querySelectorAll("[required]")].filter(i => !i.value.trim() || !i.checkValidity());
+  if (missing.length){ missing.forEach(i => i.setAttribute("aria-invalid","true")); st.dataset.kind = "err"; st.textContent = t("form.need"); missing[0].focus(); return; }
+  if (!FORM_ENDPOINT){ st.dataset.kind = ""; st.textContent = t("form.preview"); return; }
+  st.dataset.kind = ""; st.textContent = t("form.sending");
+  try {
+    const data = Object.fromEntries(new FormData(form)); data.form = form.dataset.form; data.lang = lang;
+    const r = await fetch(FORM_ENDPOINT, {method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"}, body:JSON.stringify(data)});
+    if (!r.ok) throw 0; form.reset(); st.dataset.kind = "ok"; st.textContent = t("form.ok." + form.dataset.form);
+  } catch (e) { st.dataset.kind = "err"; st.textContent = t("form.fail"); }
+}));
+
+/* ----- optional Google Sheet for dates ----- */
+async function loadSchedule(){
+  if (!SCHEDULE_CSV_URL) return;
+  try {
+    const r = await fetch(SCHEDULE_CSV_URL, {cache:"no-store"}); if (!r.ok) throw 0;
+    const lines = (await r.text()).trim().split(/\r?\n/), head = lines.shift().split(",").map(h => h.trim().toLowerCase());
+    SCHEDULE = lines.map(l => { const c = l.split(","), o = {}; head.forEach((h,i) => o[h] = (c[i] || "").trim()); return o; });
+    renderDates();
+  } catch (e) {}
+}
+
+applyLang();
+loadSchedule().then(() => {
+  let seen = false; try { seen = sessionStorage.getItem("lb-popup-seen") === "1"; } catch (e) {}
+  if (!seen && upcoming().length) openPopup();
+});
+</script>
+
+</body>
+</html>
