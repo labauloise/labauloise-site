@@ -258,6 +258,7 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
           </div>
           <label for="ev-msg"><span data-i18n="form.more">Tell us more</span><textarea id="ev-msg" name="message"></textarea></label>
           <div><button class="btn" type="submit" data-i18n="form.send">Send</button></div>
+          <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
           <p class="status" role="status"></p>
         </form>
       </div>
@@ -316,6 +317,7 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
         <label for="fb-name"><span data-i18n="form.name">Name</span><input id="fb-name" name="name" autocomplete="name"></label>
         <label for="fb-msg"><span data-i18n="fb.msg">Your message to Pauline &amp; Charles</span><textarea id="fb-msg" name="message" required></textarea></label>
         <div><button class="btn" type="submit" data-i18n="form.send">Send</button></div>
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
         <p class="status" role="status"></p>
       </form>
     </div>
@@ -326,7 +328,8 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
 <script>
 /* ===== Settings to fill in before launch ===== */
 const SCHEDULE_CSV_URL = "";   // Google Sheet published as CSV. Columns: date (YYYY-MM-DD), venue, time_en, time_fr
-const FORM_ENDPOINT = "";      // Form service that emails labauloise.sf@gmail.com (Web3Forms / Formspree). Empty = preview mode.
+const FORM_ENDPOINT = "https://api.web3forms.com/submit";  // Web3Forms: sends every submission to labauloise.sf@gmail.com
+const WEB3FORMS_KEY = "6898dfc4-8102-42ef-beb0-67c300876238";  // public key, safe in client code
 
 // Pop-up dates from Pauline (Nov 4, 2026). Replaced by the Google Sheet once it's connected.
 let SCHEDULE = [
@@ -435,8 +438,11 @@ document.querySelectorAll("form[data-form]").forEach(form => form.addEventListen
   st.dataset.kind = ""; st.textContent = t("form.sending");
   try {
     const data = Object.fromEntries(new FormData(form)); data.form = form.dataset.form; data.lang = lang;
+    data.access_key = WEB3FORMS_KEY; data.from_name = "labauloise.com";
+    data.subject = form.dataset.form === "event" ? "Private event request — " + (data.name || "labauloise.com") : "New message from labauloise.com" + (data.name ? " — " + data.name : "");
+    if (data.email) data.replyto = data.email;
     const r = await fetch(FORM_ENDPOINT, {method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"}, body:JSON.stringify(data)});
-    if (!r.ok) throw 0; form.reset(); st.dataset.kind = "ok"; st.textContent = t("form.ok." + form.dataset.form);
+    const out = await r.json().catch(() => ({})); if (!r.ok || out.success === false) throw 0; form.reset(); st.dataset.kind = "ok"; st.textContent = t("form.ok." + form.dataset.form);
   } catch (e) { st.dataset.kind = "err"; st.textContent = t("form.fail"); }
 }));
 
