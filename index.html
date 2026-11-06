@@ -41,6 +41,12 @@ section{padding-block:clamp(72px,10vw,128px)}
 .hero .slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.4s ease}
 .hero .slides img.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.hero .slides img{transition:none}}
+/* wide screens: the three portrait photos side by side instead of one cropped photo */
+@media (min-width:821px){
+  .hero .slides{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:#1b1e2b}
+  .hero .slides img{position:relative;inset:auto;opacity:1;height:100%;min-height:0}
+  .hero::before{background:radial-gradient(ellipse 34% 42% at 50% 46%,rgba(10,12,20,.5),rgba(10,12,20,0) 100%),linear-gradient(180deg,rgba(10,12,20,.5),rgba(10,12,20,.08) 35%,rgba(10,12,20,.4))}
+}
 .ph[data-label]::after{content:attr(data-label);position:absolute;inset:auto 0 12px 0;text-align:center;font-family:var(--sans);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#9A978F}
 
 /* hero banner */
@@ -67,6 +73,7 @@ section{padding-block:clamp(72px,10vw,128px)}
   .topnav .center{order:-1}
   .hero-links{display:flex!important}
 }
+@media (max-width:820px){.hero-center{align-content:end;padding-bottom:10px}.hero-center img{width:min(300px,70vw)}.hero::before{background:linear-gradient(180deg,rgba(10,12,20,.4),rgba(10,12,20,0) 30%,rgba(10,12,20,.15) 50%,rgba(10,12,20,.6))}}
 .hero-links{display:none;position:relative;z-index:2;justify-content:center;gap:22px;margin-bottom:18px}
 .hero-links a{font-family:var(--sans);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.6);padding-bottom:3px}
 
@@ -207,8 +214,8 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
 <header class="hero" id="top">
   <div class="ph slides" id="hero-slides">
     <img class="on" src="hero-1.jpg" alt="" style="object-position:50% 22%">
-    <img src="hero-2.jpg" alt="" style="object-position:50% 62%" loading="lazy">
-    <img src="hero-3.jpg" alt="" style="object-position:50% 45%" loading="lazy">
+    <img src="hero-2.jpg" alt="" style="object-position:50% 62%">
+    <img src="hero-3.jpg" alt="" style="object-position:50% 45%">
   </div>
   <nav class="wrap topnav" aria-label="Main">
     <div class="left"><a href="#our-story" data-i18n="nav.story">Our story</a><button type="button" class="link" data-open-popup data-i18n="nav.popups">Pop-ups</button></div>
@@ -437,7 +444,8 @@ document.querySelectorAll("[data-open-popup]").forEach(b => b.addEventListener("
 (() => {
   const imgs = [...document.querySelectorAll("#hero-slides img")]; let i = 0;
   if (imgs.length < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  setInterval(() => { imgs[i].classList.remove("on"); i = (i + 1) % imgs.length; imgs[i].classList.add("on"); }, 5500);
+  const narrow = matchMedia("(max-width: 820px)");
+  setInterval(() => { if (!narrow.matches) return; imgs[i].classList.remove("on"); i = (i + 1) % imgs.length; imgs[i].classList.add("on"); }, 5500);
 })();
 
 /* ----- sticky bar after the banner ----- */
