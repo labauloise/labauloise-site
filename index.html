@@ -11,7 +11,7 @@
 <style>
 /* Layout: Breizh Café–style editorial. Full-bleed photo banner with the logo centered over it,
    then quiet white sections: text + photo collage, private events + form, a signed quote and an accordion.
-   Uppercase spaced sans for structure, Garamond for reading, the brand script only for signatures. Photos are empty frames for now. */
+   Uppercase spaced sans for structure, Garamond for reading, the brand script only for signatures. Photos: Barbara Kinney proofs + the founders' own pictures. */
 :root{
   --bg:#FFFFFF; --soft:#F6F5F2; --ph:#E6E4E0; --line:#E2E0DB; --ink:#16192B; --navy:#284573; --red:#A62142; --muted:#5E6372;
   --serif:"EB Garamond", Garamond, Georgia, serif;
@@ -37,7 +37,11 @@ section{padding-block:clamp(72px,10vw,128px)}
 
 /* empty photo frame */
 .ph{background:var(--ph);position:relative;overflow:hidden}
-.ph::after{content:attr(data-label);position:absolute;inset:auto 0 12px 0;text-align:center;font-family:var(--sans);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#9A978F}
+.ph > img.fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.4s ease}
+.hero .slides img.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.hero .slides img{transition:none}}
+.ph[data-label]::after{content:attr(data-label);position:absolute;inset:auto 0 12px 0;text-align:center;font-family:var(--sans);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#9A978F}
 
 /* hero banner */
 .hero{position:relative;min-height:clamp(480px,80vh,780px);display:grid;grid-template-rows:auto 1fr auto;color:#fff;background:#3A3F4E}
@@ -177,7 +181,7 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
 <div class="modal" id="popup-modal" role="dialog" aria-modal="true" aria-labelledby="popup-title" hidden>
   <div class="dialog" id="popup-dialog" tabindex="-1" style="outline:none">
     <button class="close" type="button" id="popup-close" aria-label="Close">×</button>
-    <div class="ph" data-label="Photo"><img src="logo-cream.png" alt="" width="700" height="282"></div>
+    <div class="ph"><img src="logo-cream.png" alt="" width="700" height="282"></div>
     <div class="txt">
       <h2 id="popup-title" data-i18n="pop.title">Find us at our pop-ups!</h2>
       <p data-i18n="pop.text">Taste real French crêpes and galettes, right here in the Bay Area.</p>
@@ -201,7 +205,11 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
 </div>
 
 <header class="hero" id="top">
-  <div class="ph" data-label="Photo"></div>
+  <div class="ph slides" id="hero-slides">
+    <img class="on" src="hero-1.jpg" alt="" style="object-position:50% 22%">
+    <img src="hero-2.jpg" alt="" style="object-position:50% 62%" loading="lazy">
+    <img src="hero-3.jpg" alt="" style="object-position:50% 45%" loading="lazy">
+  </div>
   <nav class="wrap topnav" aria-label="Main">
     <div class="left"><a href="#our-story" data-i18n="nav.story">Our story</a><button type="button" class="link" data-open-popup data-i18n="nav.popups">Pop-ups</button></div>
     <div class="center"></div>
@@ -229,9 +237,9 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
         <p class="sign" data-i18n="intro.sign">Our secret? Generosity, sharing and love</p>
       </div>
       <div class="collage" aria-hidden="true">
-        <div class="ph p1" data-label="Photo"></div>
-        <div class="ph p2" data-label="Photo"></div>
-        <div class="ph p3" data-label="Photo"></div>
+        <div class="ph p1"><img class="fill" src="polaroid-1.jpg" alt="" style="object-position:55% 50%"></div>
+        <div class="ph p2"><img class="fill" src="polaroid-2.jpg" alt=""></div>
+        <div class="ph p3"><img class="fill" src="polaroid-3.jpg" alt=""></div>
       </div>
     </div>
   </section>
@@ -246,7 +254,7 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
         <p data-i18n="private.p3">Fill in this short form and we'll get back to you quickly to design a service made for you.</p>
       </div>
       <div class="split">
-        <div class="ph" data-label="Photo"></div>
+        <div class="ph"><img class="fill" src="kitchen.jpg" alt="Pauline and Charles in chef whites in a professional kitchen" loading="lazy" style="object-position:40% 55%"></div>
         <form id="event-form" data-form="event" novalidate>
           <div class="row2">
             <label for="ev-name"><span data-i18n="form.name">Name</span><input id="ev-name" name="name" autocomplete="name" required></label>
@@ -286,8 +294,8 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
           <div class="body">
             <p data-i18n="about.p">Together since 2021, we combine our strengths to build a project that feels like us. We complement each other every day: Charles in the kitchen and creating, Pauline on organization and welcoming you.</p>
             <div class="duo">
-              <div class="person"><div class="ph" data-label="Photo"></div><h3>Pauline</h3><p data-i18n="about.pauline">With a Master's in HR and from a family of caterers, she went along to her father's business meetings just to taste every dish.</p></div>
-              <div class="person"><div class="ph" data-label="Photo"></div><h3>Charles</h3><p data-i18n="about.charles">A former pro tennis player and certified coach, he mostly cooked with his family to get out of doing homework!</p></div>
+              <div class="person"><div class="ph"><img class="fill" src="portrait-pauline.jpg" alt="Pauline" loading="lazy"></div><h3>Pauline</h3><p data-i18n="about.pauline">With a Master's in HR and from a family of caterers, she went along to her father's business meetings just to taste every dish.</p></div>
+              <div class="person"><div class="ph"><img class="fill" src="portrait-charles.jpg" alt="Charles" loading="lazy"></div><h3>Charles</h3><p data-i18n="about.charles">A former pro tennis player and certified coach, he mostly cooked with his family to get out of doing homework!</p></div>
             </div>
           </div>
         </details>
@@ -321,7 +329,7 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
         <p class="status" role="status"></p>
       </form>
     </div>
-    <p class="fine">© 2026 La Bauloise · San Francisco</p>
+    <p class="fine">© 2026 La Bauloise · San Francisco · <span data-i18n="foot.photos">Photos:</span> Barbara Kinney Photography</p>
   </div>
 </footer>
 
@@ -331,10 +339,12 @@ const SCHEDULE_CSV_URL = "";   // Google Sheet published as CSV. Columns: date (
 const FORM_ENDPOINT = "https://api.web3forms.com/submit";  // Web3Forms: sends every submission to labauloise.sf@gmail.com
 const WEB3FORMS_KEY = "6898dfc4-8102-42ef-beb0-67c300876238";  // public key, safe in client code
 
-// Pop-up dates from Pauline (Nov 4, 2026). Replaced by the Google Sheet once it's connected.
+// Pop-up dates from Pauline (Nov 6, 2026). Replaced by the Google Sheet once it's connected.
 let SCHEDULE = [
-  {date:"2026-11-15", venue:"Noe Valley Coffee Shop", time_en:"9am – 2pm", time_fr:"9h00 – 14h00"},
-  {date:"2026-11-22", venue:"Marina District Farmers Market", time_en:"10am – 3pm", time_fr:"10h00 – 15h00"}
+  {date:"2026-11-14", venue:"Bernie's Coffee", time_en:"10:30am – 1:30pm", time_fr:"10h30 – 13h30"},
+  {date:"2026-11-15", venue:"Noe Café", time_en:"1pm – 4:30pm", time_fr:"13h00 – 16h30"},
+  {date:"2026-11-21", venue:"Bernie's Coffee", time_en:"10:30am – 1:30pm", time_fr:"10h30 – 13h30"},
+  {date:"2026-11-22", venue:"Noe Café", time_en:"1pm – 4:30pm", time_fr:"13h00 – 16h30"}
 ];
 
 const T = {
@@ -356,7 +366,7 @@ const T = {
     "about.pauline":"With a Master's in HR and from a family of caterers, she went along to her father's business meetings just to taste every dish.",
     "about.charles":"A former pro tennis player and certified coach, he mostly cooked with his family to get out of doing homework!",
     "name.p":"Choosing La Bauloise felt obvious: bringing a piece of La Baule, our Breton hometown, along with us. It's a tribute to our family and to the precious legacy of our grandparents, who passed down the perfect gesture and the art of the true Breton crêpe.",
-    "fb.title":"A word for us?","fb.msg":"Your message to Pauline & Charles",
+    "fb.title":"A word for us?","foot.photos":"Photos:","fb.msg":"Your message to Pauline & Charles",
     "form.need":"Please fill in the highlighted fields.","form.sending":"Sending…","form.ok.event":"Thank you! We'll get back to you very soon.","form.ok.feedback":"Thank you! Your message is on its way.",
     "form.fail":"That didn't go through. Please try again, or email labauloise.sf@gmail.com.",
     "form.preview":"Preview: this form isn't connected yet. On the live site it goes straight to labauloise.sf@gmail.com."
@@ -379,7 +389,7 @@ const T = {
     "about.pauline":"Diplômée d'un Master RH et issue d'une famille de traiteurs, elle accompagnait son père en rendez-vous uniquement pour goûter à tous les plats.",
     "about.charles":"Ancien joueur de tennis pro et coach diplômé, il cuisinait surtout en famille pour échapper à ses devoirs d'école !",
     "name.p":"Choisir La Bauloise, c'était comme une évidence : faire voyager un bout de La Baule, notre ville natale bretonne. C'est un hommage à notre famille et le précieux héritage de nos grands-parents, qui nous ont transmis le geste parfait et l'art de la vraie crêpe bretonne.",
-    "fb.title":"Un mot pour nous ?","fb.msg":"Votre message pour Pauline & Charles",
+    "fb.title":"Un mot pour nous ?","foot.photos":"Photos :","fb.msg":"Votre message pour Pauline & Charles",
     "form.need":"Merci de remplir les champs indiqués.","form.sending":"Envoi…","form.ok.event":"Merci ! Nous vous recontactons très vite.","form.ok.feedback":"Merci ! Votre message est bien parti.",
     "form.fail":"L'envoi n'a pas marché. Réessayez, ou écrivez à labauloise.sf@gmail.com.",
     "form.preview":"Aperçu : ce formulaire n'est pas encore branché. Sur le site en ligne, il arrive directement sur labauloise.sf@gmail.com."
@@ -422,6 +432,13 @@ document.getElementById("popup-close").addEventListener("click", closePopup);
 modal.addEventListener("click", e => { if (e.target === modal) closePopup(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closePopup(); });
 document.querySelectorAll("[data-open-popup]").forEach(b => b.addEventListener("click", openPopup));
+
+/* ----- banner slideshow ----- */
+(() => {
+  const imgs = [...document.querySelectorAll("#hero-slides img")]; let i = 0;
+  if (imgs.length < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  setInterval(() => { imgs[i].classList.remove("on"); i = (i + 1) % imgs.length; imgs[i].classList.add("on"); }, 5500);
+})();
 
 /* ----- sticky bar after the banner ----- */
 const bar = document.getElementById("bar");
