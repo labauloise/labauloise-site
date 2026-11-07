@@ -14,6 +14,17 @@
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://labauloise.com/">
+<meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="fr_FR">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FoodEstablishment","@id":"https://labauloise.com/#business",
+"name":"La Bauloise","alternateName":"La Bauloise Crêperie","url":"https://labauloise.com/",
+"description":"French crêperie in San Francisco: authentic Breton buckwheat galettes (naturally gluten-free) and sweet crêpes, made in front of you at pop-ups and private events.",
+"logo":"https://labauloise.com/logo-red.png","image":["https://labauloise.com/og.jpg","https://labauloise.com/hero-2.jpg","https://labauloise.com/hero-3.jpg"],
+"servesCuisine":["French","Crêpes","Galettes","Breton"],"email":"labauloise.sf@gmail.com",
+"address":{"@type":"PostalAddress","addressLocality":"San Francisco","addressRegion":"CA","addressCountry":"US"},
+"areaServed":{"@type":"City","name":"San Francisco"},"founder":[{"@type":"Person","name":"Pauline"},{"@type":"Person","name":"Charles"}],
+"sameAs":["https://www.instagram.com/labauloise.creperie/"]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@400;500&display=swap">
@@ -197,7 +208,7 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
 <div class="modal" id="popup-modal" role="dialog" aria-modal="true" aria-labelledby="popup-title" hidden>
   <div class="dialog" id="popup-dialog" tabindex="-1" style="outline:none">
     <button class="close" type="button" id="popup-close" aria-label="Close">×</button>
-    <div class="ph"><img src="logo-cream.png" alt="" width="700" height="282"></div>
+    <div class="ph"><img src="logo-cream.png" alt="La Bauloise" width="700" height="282"></div>
     <div class="txt">
       <h2 id="popup-title" data-i18n="pop.title">Find us at our pop-ups!</h2>
       <p data-i18n="pop.text">Taste real French crêpes and galettes, right here in the Bay Area.</p>
@@ -222,9 +233,9 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
 
 <header class="hero" id="top">
   <div class="ph slides" id="hero-slides">
-    <img class="on" src="hero-1.jpg" alt="" style="object-position:50% 22%">
-    <img src="hero-2.jpg" alt="" style="object-position:50% 62%">
-    <img src="hero-3.jpg" alt="" style="object-position:50% 45%">
+    <img class="on" src="hero-1.jpg" alt="Pauline and Charles of La Bauloise in their aprons" style="object-position:50% 22%">
+    <img src="hero-2.jpg" alt="A sweet crêpe with chocolate being brushed with butter on the griddle" style="object-position:50% 62%">
+    <img src="hero-3.jpg" alt="A buckwheat galette served in a La Bauloise cone" style="object-position:50% 45%">
   </div>
   <nav class="wrap topnav" aria-label="Main">
     <div class="left"><a href="#our-story" data-i18n="nav.story">Our story</a><button type="button" class="link" data-open-popup data-i18n="nav.popups">Pop-ups</button></div>
@@ -253,9 +264,9 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
         <p class="sign" data-i18n="intro.sign">Our secret? Generosity, sharing and love</p>
       </div>
       <div class="collage" aria-hidden="true">
-        <div class="ph p1"><img class="fill" src="polaroid-1.jpg" alt="" style="object-position:55% 50%"></div>
-        <div class="ph p2"><img class="fill" src="polaroid-2.jpg" alt=""></div>
-        <div class="ph p3"><img class="fill" src="polaroid-3.jpg" alt=""></div>
+        <div class="ph p1"><img class="fill" src="polaroid-1.jpg" alt="The La Bauloise team at a pop-up" style="object-position:55% 50%"></div>
+        <div class="ph p2"><img class="fill" src="polaroid-2.jpg" alt="Charles making crêpes at the stand"></div>
+        <div class="ph p3"><img class="fill" src="polaroid-3.jpg" alt="Pauline and Charles cooking galettes at a pop-up"></div>
       </div>
     </div>
   </section>
@@ -351,16 +362,16 @@ footer .fine{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,255,
 
 <script>
 /* ===== Settings to fill in before launch ===== */
-const SCHEDULE_CSV_URL = "";   // Google Sheet published as CSV. Columns: date (YYYY-MM-DD), venue, time_en, time_fr
+const SCHEDULE_CSV_URL = "";   // Google Sheet published as CSV. Columns: date (YYYY-MM-DD), venue, time_en, time_fr, address, zip (optional, for Google)
 const FORM_ENDPOINT = "https://api.web3forms.com/submit";  // Web3Forms: sends every submission to labauloise.sf@gmail.com
 const WEB3FORMS_KEY = "6898dfc4-8102-42ef-beb0-67c300876238";  // public key, safe in client code
 
 // Pop-up dates from Pauline (Nov 6, 2026). Replaced by the Google Sheet once it's connected.
 let SCHEDULE = [
-  {date:"2026-11-14", venue:"Bernie's Coffee", time_en:"10:30am – 1:30pm", time_fr:"10h30 – 13h30"},
-  {date:"2026-11-15", venue:"Noe Café", time_en:"1pm – 4:30pm", time_fr:"13h00 – 16h30"},
-  {date:"2026-11-21", venue:"Bernie's Coffee", time_en:"10:30am – 1:30pm", time_fr:"10h30 – 13h30"},
-  {date:"2026-11-22", venue:"Noe Café", time_en:"1pm – 4:30pm", time_fr:"13h00 – 16h30"}
+  {date:"2026-11-14", venue:"Bernie's Coffee", time_en:"10:30am – 1:30pm", time_fr:"10h30 – 13h30", address:"3966 24th St", zip:"94114"},
+  {date:"2026-11-15", venue:"Noe Café", time_en:"1pm – 4:30pm", time_fr:"13h00 – 16h30", address:"1299 Sanchez St", zip:"94114"},
+  {date:"2026-11-21", venue:"Bernie's Coffee", time_en:"10:30am – 1:30pm", time_fr:"10h30 – 13h30", address:"3966 24th St", zip:"94114"},
+  {date:"2026-11-22", venue:"Noe Café", time_en:"1pm – 4:30pm", time_fr:"13h00 – 16h30", address:"1299 Sanchez St", zip:"94114"}
 ];
 
 const T = {
@@ -494,8 +505,31 @@ async function loadSchedule(){
   } catch (e) {}
 }
 
+/* ----- pop-up dates for Google (Event structured data, built from SCHEDULE) ----- */
+function eventsLD(){
+  try {
+    const old = document.getElementById("events-ld"); if (old) old.remove();
+    const off = d => { try { const m = new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",timeZoneName:"shortOffset"}).formatToParts(d).find(x => x.type === "timeZoneName").value.match(/GMT([+-])(\d+)/); return m ? m[1] + m[2].padStart(2,"0") + ":00" : "-08:00"; } catch (e) { return "-08:00"; } };
+    const hm = x => { const m = (x || "").match(/(\d{1,2})h(\d{2})?/); return m ? m[1].padStart(2,"0") + ":" + (m[2] || "00") : null; };
+    const ev = upcoming().map(r => {
+      const [a, b] = (r.time_fr || "").split(/[–-]/).map(hm), z = off(r.d);
+      const o = {"@type":"FoodEvent", name:"La Bauloise crêpe pop-up at " + r.venue, startDate: r.date + (a ? "T" + a + ":00" + z : ""),
+        eventStatus:"https://schema.org/EventScheduled", eventAttendanceMode:"https://schema.org/OfflineEventAttendanceMode",
+        location:{"@type":"Place", name:r.venue, address:{"@type":"PostalAddress", ...(r.address ? {streetAddress:r.address} : {}), ...(r.zip ? {postalCode:r.zip} : {}), addressLocality:"San Francisco", addressRegion:"CA", addressCountry:"US"}},
+        image:["https://labauloise.com/og.jpg"], description:"Fresh Breton galettes and crêpes made in front of you.",
+        organizer:{"@type":"Organization", name:"La Bauloise", url:"https://labauloise.com/"}};
+      if (b) o.endDate = r.date + "T" + b + ":00" + z;
+      return o;
+    });
+    if (!ev.length) return;
+    const sc = document.createElement("script"); sc.type = "application/ld+json"; sc.id = "events-ld";
+    sc.textContent = JSON.stringify({"@context":"https://schema.org", "@graph":ev}); document.head.appendChild(sc);
+  } catch (e) {}
+}
+
 applyLang();
 loadSchedule().then(() => {
+  eventsLD();
   let seen = false; try { seen = sessionStorage.getItem("lb-popup-seen") === "1"; } catch (e) {}
   if (!seen && upcoming().length) openPopup();
 });
